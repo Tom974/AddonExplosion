@@ -4,6 +4,7 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.function.mask.Mask;
 import com.sk89q.worldguard.bukkit.RegionContainer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -27,6 +28,7 @@ public class WorldGuardMask implements Mask {
 
     @Override
     public boolean test(Vector vector) {
-        return manager.getApplicableRegions(vector).getRegions().stream().anyMatch(region->region.getFlag(DefaultFlag.BLOCK_BREAK)==StateFlag.State.DENY)||blacklist.stream().anyMatch(region->region.contains(vector));
+        ApplicableRegionSet regions = manager.getApplicableRegions(vector);
+        return !regions.testState(null, DefaultFlag.BLOCK_BREAK)||regions.getRegions().stream().anyMatch(blacklist::contains);
     }
 }
