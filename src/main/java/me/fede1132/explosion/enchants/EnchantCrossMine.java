@@ -1,25 +1,31 @@
 package me.fede1132.explosion.enchants;
 
 import com.boydti.fawe.FaweAPI;
+import com.boydti.fawe.object.FaweQueue;
 import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Region;
+import com.sk89q.worldedit.regions.RegionIntersection;
 import me.fede1132.explosion.EnchantUtil;
+import me.fede1132.plasmaprisoncore.PlasmaPrisonCore;
 import me.fede1132.plasmaprisoncore.enchant.BreakResult;
 import me.fede1132.plasmaprisoncore.enchant.Enchant;
 import me.fede1132.plasmaprisoncore.enchant.EnchantManager;
 import me.fede1132.plasmaprisoncore.internal.util.SimpleEntry;
-import me.fede1132.plasmaprisoncore.internal.util.regions.shapes.CuboidRegion;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class EnchantCrossMine extends Enchant {
     public EnchantCrossMine() {
@@ -40,23 +46,19 @@ public class EnchantCrossMine extends Enchant {
             maxSize = (int) Math.round((((double)maxSize / (double)max) * lvl));
         }
         Location loc = event.getBlock().getLocation();
-        CuboidRegion line = new CuboidRegion(event.getBlock().getWorld(),
-                loc.clone().add(maxSize,maxSize+1,0),
-                loc.clone().subtract(maxSize,maxSize+1,0));
-        CuboidRegion line2 = new CuboidRegion(event.getBlock().getWorld(),
-                loc.clone().add(0,maxSize+1,maxSize),
-                loc.clone().subtract(0,maxSize+1,maxSize));
-        line.merge(line2);
-        List<Material> blocks = line.getBlocks().stream().map(locX->((CraftWorld) event.getBlock().getWorld()).getBlockTypeIdAt(
-                locX.getBlockX(),
-                locX.getBlockY(),
-                locX.getBlockZ()))
-                .map(Material::getMaterial)
-                .collect(Collectors.toList());
-        line2.close();
+        CuboidRegion horizontal = new CuboidRegion(FaweAPI.getWorld(loc.getWorld().getName()), BukkitUtil.toVector(loc.clone().add(maxSize,maxSize+1,0)), BukkitUtil.toVector(loc.clone().subtract(maxSize,maxSize+1,0)));
+        CuboidRegion vertical = new CuboidRegion(FaweAPI.getWorld(loc.getWorld().getName()), BukkitUtil.toVector(loc.clone().add(0,maxSize+1,maxSize)), BukkitUtil.toVector(loc.clone().subtract(0,maxSize+1,maxSize)));
+        Region cross = new RegionIntersection(horizontal, vertical);
         EditSession session = new EditSessionBuilder(FaweAPI.getWorld(event.getBlock().getWorld().getName())).fastmode(true).build();
-        session.setMask(EnchantUtil.getMask(event.getBlock().getWorld(), session));
-        session.setBlocks(line.getBlocks().stream().map(BukkitUtil::toVector).collect(Collectors.toSet()), new BaseBlock(0));
+        FaweQueue queue = session.getQueue();
+        List<Material> blocks = StreamSupport.stream(Spliterators.spliteratorUnknownSize(cross.iterator(), Spliterator.ORDERED), false)
+                .map(queue::getLazyBlock)// loads every block in the selection
+                .filter(Objects::nonNull) // null check
+                .filter(block->!block.isAir()) // air check
+                .map(BaseBlock::getId) // get block ids
+                .map(Material::getMaterial) // map to materials
+                .collect(Collectors.toList()); // collect to list
+        session.setBlocks(cross, new BaseBlock(0));
         session.flushQueue();
         event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 1);
         return new BreakResult(blocks, session.getBlockChangeCount());
