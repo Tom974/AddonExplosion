@@ -2,6 +2,7 @@ package me.fede1132.explosion;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.blocks.BlockID;
 import com.sk89q.worldedit.function.mask.*;
 import org.bukkit.World;
 
@@ -11,6 +12,7 @@ public class EnchantUtil {
     private static WorldGuardMask wgMask;
     public static Mask getMask(World world, EditSession session) {
         if (wgMask==null) wgMask = new WorldGuardMask(world);
+        // use replacement of new BaseBlock since baseblock is deprecated
         return new MaskIntersection(Masks.negate(new BlockMask(session, new BaseBlock(7))), wgMask);
     }
 

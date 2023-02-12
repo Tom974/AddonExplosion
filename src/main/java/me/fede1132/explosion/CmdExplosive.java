@@ -1,6 +1,6 @@
 package me.fede1132.explosion;
 
-import me.fede1132.f32lib.other.StringUtil;
+import me.fede1132.plasmaprisoncore.StringUtil;
 import me.fede1132.plasmaprisoncore.addons.cmds.CommandInfo;
 import me.fede1132.plasmaprisoncore.addons.cmds.XCommand;
 import org.bukkit.command.CommandSender;

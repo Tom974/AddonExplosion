@@ -36,9 +36,7 @@ import java.util.stream.StreamSupport;
 public class EnchantJackHammer extends Enchant {
     private final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
     public EnchantJackHammer() {
-        super("jackhammer",
-                "JackHammer", 100, 1, "6", 100,
-                new SimpleEntry<>("fast-mode", true), new SimpleEntry<>("region-blacklist", Arrays.asList("example", "region")));
+        super("jackhammer", "JackHammer", 100, 1, "6", 100, new SimpleEntry<>("fast-mode", true), new SimpleEntry<>("region-blacklist", Arrays.asList("example", "region")));
     }
 
     @Override
@@ -61,6 +59,7 @@ public class EnchantJackHammer extends Enchant {
                     .map(Material::getMaterial) // map to materials
                     .collect(Collectors.toList()); // collect to list
             session.setMask(EnchantUtil.getMask(event.getBlock().getWorld(), session));
+            // get amount of blocks from cube
             session.setBlocks(cube, new BaseBlock(0));
             session.flushQueue();
             return new BreakResult(blocks, session.getBlockChangeCount());

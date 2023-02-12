@@ -1,7 +1,7 @@
 package me.fede1132.explosion;
 
 import me.fede1132.explosion.enchants.*;
-import me.fede1132.f32lib.shaded.storage.Yaml;
+import de.leonhard.storage.Yaml;
 import me.fede1132.plasmaprisoncore.addons.Addon;
 import me.fede1132.plasmaprisoncore.internal.util.SimpleEntry;
 import org.bukkit.Bukkit;

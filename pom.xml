@@ -43,6 +43,8 @@
             <groupId>com.boydti</groupId>
             <artifactId>fawe-api</artifactId>
             <version>19.11.13-5505943-1282-22.3.5</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/FastAsyncWorldEdit-bukkit-19.11.13-5505943-1282-22.3.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
@@ -59,7 +61,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.0</version>
+            <version>6.2.2</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/wg.jar</systemPath>
         </dependency>
