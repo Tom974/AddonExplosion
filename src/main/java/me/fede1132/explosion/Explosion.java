@@ -23,15 +23,15 @@ public class Explosion extends Addon {
             unload();
         }
         instance=this;
-        try (Connection connection = plugin.database.getConnection()) {
-            connection.prepareStatement("CREATE TABLE IF NOT EXISTS explosion_prefs (" +
-                    " `uuid` CHAR(36) NOT NULL," +
-                    " `explosive` VARCHAR(5) NOT NULL," +
-                    " PRIMARY KEY(`uuid`))").executeUpdate();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // try (Connection connection = plugin.database.getConnection()) {
+        //     connection.prepareStatement("CREATE TABLE IF NOT EXISTS explosion_prefs (" +
+        //             " `uuid` CHAR(36) NOT NULL," +
+        //             " `explosive` VARCHAR(5) NOT NULL," +
+        //             " PRIMARY KEY(`uuid`))").executeUpdate();
+        //     connection.close();
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // }
         config = setupPersonalConfig("config.yml",
                 new SimpleEntry<>("messages.explosive-toggle-true", "&fExplosive enchant toggled to true"),
                 new SimpleEntry<>("messages.explosive-toggle-false", "&fExplosive enchant toggled to false"),
@@ -41,41 +41,43 @@ public class Explosion extends Addon {
     }
 
     public boolean toggleExplosive(UUID uuid) {
-        try (Connection connection = plugin.database.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM explosion_prefs WHERE uuid = ?");
-            ps.setString(1, uuid.toString());
-            ResultSet rs = ps.executeQuery();
-            boolean next = rs.next();
-            boolean curr = !next || Boolean.parseBoolean(rs.getString("explosive"));
-            PreparedStatement update = connection.prepareStatement(next?"UPDATE explosion_prefs SET explosive = ? WHERE uuid = ?":
-                    "INSERT INTO explosion_prefs (explosive, uuid) VALUES (?, ?)");
-            update.setString(1, String.valueOf(curr=!curr));
-            update.setString(2, uuid.toString());
-            update.executeUpdate();
-            connection.close();
-            return curr;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // try (Connection connection = plugin.database.getConnection()) {
+        //     PreparedStatement ps = connection.prepareStatement("SELECT * FROM explosion_prefs WHERE uuid = ?");
+        //     ps.setString(1, uuid.toString());
+        //     ResultSet rs = ps.executeQuery();
+        //     boolean next = rs.next();
+        //     boolean curr = !next || Boolean.parseBoolean(rs.getString("explosive"));
+        //     PreparedStatement update = connection.prepareStatement(next?"UPDATE explosion_prefs SET explosive = ? WHERE uuid = ?":
+        //             "INSERT INTO explosion_prefs (explosive, uuid) VALUES (?, ?)");
+        //     update.setString(1, String.valueOf(curr=!curr));
+        //     update.setString(2, uuid.toString());
+        //     update.executeUpdate();
+        //     connection.close();
+        //     return curr;
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // }
         return false;
     }
 
     public boolean getExplosiveStatus(UUID uuid) {
-        try (Connection connection = plugin.database.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM explosion_prefs WHERE uuid = ?");
-            ps.setString(1, uuid.toString());
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                connection.close();
-                return true;
-            } else {
-                connection.close();
-                return Boolean.parseBoolean(rs.getString("explosive"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        // try (Connection connection = plugin.database.getConnection()) {
+        //     PreparedStatement ps = connection.prepareStatement("SELECT * FROM explosion_prefs WHERE uuid = ?");
+        //     ps.setString(1, uuid.toString());
+        //     ResultSet rs = ps.executeQuery();
+        //     if (!rs.next()) {
+        //         connection.close();
+        //         return true;
+        //     } else {
+        //         connection.close();
+        //         return Boolean.parseBoolean(rs.getString("explosive"));
+        //     }
+
+            return true;
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // }
+        // return false;
     }
 
     public static Explosion inst() {
