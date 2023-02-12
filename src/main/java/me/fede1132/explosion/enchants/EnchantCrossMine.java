@@ -45,7 +45,6 @@ public class EnchantCrossMine extends Enchant {
         RegionManager manager = container.get(event.getBlock().getWorld());
         for (ProtectedRegion region : manager.getApplicableRegions(event.getBlock().getLocation())) {
             if (region.getFlag(DefaultFlag.BLOCK_BREAK)!=State.ALLOW||region.getId().toLowerCase().equals("__global__")) continue;
-            event.getPlayer().sendMessage("block-break: allowed");
             int lvl = EnchantManager.getInst().getEnchantLevel(event.getPlayer().getInventory().getItemInMainHand(),getId());
             if (!EnchantUtil.chance(max,lvl,maxChance)) return null;
             int maxSize = (Integer) options[0].getValue();
