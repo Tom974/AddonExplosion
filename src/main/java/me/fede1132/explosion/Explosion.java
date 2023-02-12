@@ -28,6 +28,7 @@ public class Explosion extends Addon {
                     " `uuid` CHAR(36) NOT NULL," +
                     " `explosive` VARCHAR(5) NOT NULL," +
                     " PRIMARY KEY(`uuid`))").executeUpdate();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -35,7 +36,7 @@ public class Explosion extends Addon {
                 new SimpleEntry<>("messages.explosive-toggle-true", "&fExplosive enchant toggled to true"),
                 new SimpleEntry<>("messages.explosive-toggle-false", "&fExplosive enchant toggled to false"),
                 new SimpleEntry<>("regions.blacklist", Arrays.asList("main")));
-        registerEnchants(new EnchantAtomBomb(), new EnchantCrossMine(), new EnchantExplosive(), new EnchantJackHammer(), new EnchantNuke(), new EnchantTile());
+        registerEnchants(new EnchantAtomBomb(), new EnchantCrossMine(), new EnchantExplosive(), new EnchantJackHammer(), new EnchantNuke());
         registerCommands(new CmdExplosive());
     }
 
@@ -51,6 +52,7 @@ public class Explosion extends Addon {
             update.setString(1, String.valueOf(curr=!curr));
             update.setString(2, uuid.toString());
             update.executeUpdate();
+            connection.close();
             return curr;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -63,8 +65,13 @@ public class Explosion extends Addon {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM explosion_prefs WHERE uuid = ?");
             ps.setString(1, uuid.toString());
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) return true;
-            return Boolean.parseBoolean(rs.getString("explosive"));
+            if (!rs.next()) {
+                connection.close();
+                return true;
+            } else {
+                connection.close();
+                return Boolean.parseBoolean(rs.getString("explosive"));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
