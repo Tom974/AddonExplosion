@@ -1,11 +1,10 @@
-package me.fede1132.explosion.enchants;
+package me.mynqme.explosion.enchants;
 
 import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.object.FaweQueue;
 import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionIntersection;
@@ -16,32 +15,31 @@ import com.sk89q.worldguard.protection.flags.StateFlag.State;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
-import me.fede1132.explosion.EnchantUtil;
-import me.fede1132.plasmaprisoncore.PlasmaPrisonCore;
-import me.fede1132.plasmaprisoncore.enchant.BreakResult;
-import me.fede1132.plasmaprisoncore.enchant.Enchant;
-import me.fede1132.plasmaprisoncore.enchant.EnchantManager;
-import me.fede1132.plasmaprisoncore.internal.util.SimpleEntry;
-import org.bukkit.Bukkit;
+import me.mynqme.explosion.EnchantUtil;
+import me.mynqme.explosion.Explosion;
+import me.mynqme.plasmaprisoncore.enchant.BreakResult;
+import me.mynqme.plasmaprisoncore.enchant.Enchant;
+import me.mynqme.plasmaprisoncore.enchant.EnchantManager;
+import me.mynqme.plasmaprisoncore.internal.util.SimpleEntry;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class EnchantCrossMine extends Enchant {
     private final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
+    private final Explosion instance = ((Explosion) Explosion.getInstance());
     public EnchantCrossMine() {
-        super("crossmine", "CrossMine", 100, 1, "f", 100, new SimpleEntry<>("max-size", 10), new SimpleEntry<>("max-size-random", true));
+        super("crossmine", "CrossMine", 100, 1, "&d▎ &3%name% &f%level%", 100.0, new SimpleEntry<>("max-size", 10), new SimpleEntry<>("max-size-random", true));
     }
 
     @Override
     public BreakResult onBreak(BlockBreakEvent event) {
+        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
         RegionManager manager = container.get(event.getBlock().getWorld());
         for (ProtectedRegion region : manager.getApplicableRegions(event.getBlock().getLocation())) {
             if (region.getFlag(DefaultFlag.BLOCK_BREAK)!=State.ALLOW||region.getId().toLowerCase().equals("__global__")) continue;

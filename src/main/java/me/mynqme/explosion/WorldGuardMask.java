@@ -1,4 +1,4 @@
-package me.fede1132.explosion;
+package me.mynqme.explosion;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.function.mask.Mask;

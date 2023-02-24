@@ -1,4 +1,4 @@
-package me.fede1132.explosion.enchants;
+package me.mynqme.explosion.enchants;
 
 import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.object.FaweQueue;
@@ -8,30 +8,25 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitUtil;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
-import me.fede1132.explosion.EnchantUtil;
-import me.fede1132.explosion.Explosion;
-import me.fede1132.plasmaprisoncore.PlasmaPrisonCore;
-import me.fede1132.plasmaprisoncore.enchant.BreakResult;
-import me.fede1132.plasmaprisoncore.enchant.Enchant;
-import me.fede1132.plasmaprisoncore.enchant.EnchantManager;
-import me.fede1132.plasmaprisoncore.internal.util.SimpleEntry;
-import org.bukkit.Bukkit;
+import me.mynqme.explosion.EnchantUtil;
+import me.mynqme.explosion.Explosion;
+import me.mynqme.plasmaprisoncore.enchant.BreakResult;
+import me.mynqme.plasmaprisoncore.enchant.Enchant;
+import me.mynqme.plasmaprisoncore.enchant.EnchantManager;
+import me.mynqme.plasmaprisoncore.internal.util.SimpleEntry;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class EnchantExplosive extends Enchant {
     private final Explosion instance = ((Explosion) Explosion.getInstance());
     public EnchantExplosive() {
-        super("explosive", "Explosive", 100, 1, "d", 100,
-                new SimpleEntry<>("max-radius",10));
+        super("explosive", "Explosive", 100, 1, "&d▎ &3%name% &f%level%", 100.0, new SimpleEntry<>("max-radius",10));
     }
 
     @Override

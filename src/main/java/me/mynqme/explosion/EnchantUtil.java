@@ -1,4 +1,4 @@
-package me.fede1132.explosion;
+package me.mynqme.explosion;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.blocks.BaseBlock;
@@ -16,7 +16,7 @@ public class EnchantUtil {
         return new MaskIntersection(Masks.negate(new BlockMask(session, new BaseBlock(7))), wgMask);
     }
 
-    public static boolean chance(int max, int lvl, int maxChance) {
+    public static boolean chance(int max, int lvl, double maxChance) {
         int rnd = new Random().nextInt(99);
         double percent = ((double) lvl / (double) max) * 100D;
         if (percent>maxChance) percent = maxChance;

@@ -33,7 +33,7 @@
             <systemPath>${basedir}/../PlasmaPrisonCore/lib/spigot-1.12.2.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>me.fede1132</groupId>
+            <groupId>me.mynqme</groupId>
             <artifactId>PlasmaPrisonCoreDependecies</artifactId>
             <version>1.0</version>
             <scope>system</scope>

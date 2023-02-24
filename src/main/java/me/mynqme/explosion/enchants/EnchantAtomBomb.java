@@ -1,6 +1,5 @@
-package me.fede1132.explosion.enchants;
+package me.mynqme.explosion.enchants;
 
-import com.boydti.fawe.FaweAPI;
 import com.boydti.fawe.object.FaweQueue;
 import com.boydti.fawe.util.EditSessionBuilder;
 import com.sk89q.worldedit.EditSession;
@@ -11,33 +10,29 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.fede1132.explosion.EnchantUtil;
-import me.fede1132.plasmaprisoncore.PlasmaPrisonCore;
-import me.fede1132.plasmaprisoncore.enchant.BreakResult;
-import me.fede1132.plasmaprisoncore.enchant.Enchant;
-import me.fede1132.plasmaprisoncore.enchant.EnchantManager;
-import me.fede1132.plasmaprisoncore.internal.util.SimpleEntry;
-import org.bukkit.Bukkit;
+import me.mynqme.explosion.EnchantUtil;
+import me.mynqme.explosion.Explosion;
+import me.mynqme.plasmaprisoncore.enchant.BreakResult;
+import me.mynqme.plasmaprisoncore.enchant.Enchant;
+import me.mynqme.plasmaprisoncore.enchant.EnchantManager;
+import me.mynqme.plasmaprisoncore.internal.util.SimpleEntry;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class EnchantAtomBomb extends Enchant {
     private final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
+    private final Explosion instance = ((Explosion) Explosion.getInstance());
     public EnchantAtomBomb() {
-        super("atombomb",
-                "Atom Bomb",
-                1, 1, "4", 100,
-                new SimpleEntry<>("fast-mode", true));
+        super("atombomb", "Atom Bomb", 1, 1, "&d▎ &3%name% &f%level%", 100.0, new SimpleEntry<>("fast-mode", true));
     }
 
     @Override
     public BreakResult onBreak(BlockBreakEvent event) {
+        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
         int lvl = EnchantManager.getInst().getEnchantLevel(event.getPlayer().getInventory().getItemInMainHand(), getId());
         if (lvl==0 || !EnchantUtil.chance(max, lvl, maxChance)) return null;
         Optional<ProtectedRegion> opt = container.get(event.getBlock().getWorld()).getApplicableRegions(event.getBlock().getLocation()).getRegions().stream().filter(region->region.getFlag(DefaultFlag.BLOCK_BREAK)==StateFlag.State.ALLOW&&!region.getId().equals("__global__")).findFirst();

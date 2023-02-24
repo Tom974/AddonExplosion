@@ -1,8 +1,8 @@
-package me.fede1132.explosion;
+package me.mynqme.explosion;
 
-import me.fede1132.plasmaprisoncore.StringUtil;
-import me.fede1132.plasmaprisoncore.addons.cmds.CommandInfo;
-import me.fede1132.plasmaprisoncore.addons.cmds.XCommand;
+import me.mynqme.plasmaprisoncore.StringUtil;
+import me.mynqme.plasmaprisoncore.addons.cmds.CommandInfo;
+import me.mynqme.plasmaprisoncore.addons.cmds.XCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
