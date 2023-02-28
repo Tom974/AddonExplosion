@@ -39,7 +39,7 @@ public class EnchantCrossMine extends Enchant {
 
     @Override
     public BreakResult onBreak(BlockBreakEvent event) {
-        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
+//        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
         RegionManager manager = container.get(event.getBlock().getWorld());
         for (ProtectedRegion region : manager.getApplicableRegions(event.getBlock().getLocation())) {
             if (region.getFlag(DefaultFlag.BLOCK_BREAK)!=State.ALLOW||region.getId().toLowerCase().equals("__global__")) continue;

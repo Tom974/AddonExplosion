@@ -32,7 +32,7 @@ public class EnchantAtomBomb extends Enchant {
 
     @Override
     public BreakResult onBreak(BlockBreakEvent event) {
-        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
+//        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
         int lvl = EnchantManager.getInst().getEnchantLevel(event.getPlayer().getInventory().getItemInMainHand(), getId());
         if (lvl==0 || !EnchantUtil.chance(max, lvl, maxChance)) return null;
         Optional<ProtectedRegion> opt = container.get(event.getBlock().getWorld()).getApplicableRegions(event.getBlock().getLocation()).getRegions().stream().filter(region->region.getFlag(DefaultFlag.BLOCK_BREAK)==StateFlag.State.ALLOW&&!region.getId().equals("__global__")).findFirst();

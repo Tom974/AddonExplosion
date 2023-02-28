@@ -17,9 +17,8 @@ public class EnchantUtil {
     }
 
     public static boolean chance(int max, int lvl, double maxChance) {
-        int rnd = new Random().nextInt(99);
         double percent = ((double) lvl / (double) max) * 100D;
         if (percent>maxChance) percent = maxChance;
-        return percent>=rnd;
+        return percent >= (Math.round(Math.random() * 1000) / 10.0);
     }
 }

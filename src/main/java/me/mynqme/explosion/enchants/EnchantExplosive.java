@@ -31,7 +31,7 @@ public class EnchantExplosive extends Enchant {
 
     @Override
     public BreakResult onBreak(BlockBreakEvent event) {
-        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
+//        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
         int lvl = EnchantManager.getInst().getEnchantLevel(event.getPlayer().getInventory().getItemInMainHand(),getId());
         if (!EnchantUtil.chance(max,lvl,maxChance)) return null;
         int rnd = new Random().nextInt((Integer) options[0].getValue());
