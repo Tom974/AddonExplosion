@@ -35,7 +35,9 @@ public class EnchantAtomBomb extends Enchant {
 //        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
         int lvl = EnchantManager.getInst().getEnchantLevel(event.getPlayer().getInventory().getItemInMainHand(), getId());
         if (lvl==0 || !EnchantUtil.chance(max, lvl, maxChance)) return null;
-        Optional<ProtectedRegion> opt = container.get(event.getBlock().getWorld()).getApplicableRegions(event.getBlock().getLocation()).getRegions().stream().filter(region->region.getFlag(DefaultFlag.BLOCK_BREAK)==StateFlag.State.ALLOW&&!region.getId().equals("__global__")).findFirst();
+        Optional<ProtectedRegion> opt = container.get(event.getBlock().getWorld()).getApplicableRegions(event.getBlock().getLocation())
+                .getRegions().stream().filter(region->region.getFlag(DefaultFlag.BLOCK_BREAK)==StateFlag.State.ALLOW&&!region.getId().equals("__global__")
+                        && !region.getId().equals("mine-event")).findFirst();
         if (!opt.isPresent()) return null;
         ProtectedRegion region = opt.get();
         CuboidRegion cuboid = new CuboidRegion(region.getMinimumPoint(), region.getMaximumPoint());

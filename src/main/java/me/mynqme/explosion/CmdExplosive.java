@@ -5,7 +5,6 @@ import me.mynqme.plasmaprisoncore.addons.cmds.CommandInfo;
 import me.mynqme.plasmaprisoncore.addons.cmds.XCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
 import java.util.List;
 
 @CommandInfo(

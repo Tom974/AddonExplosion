@@ -36,29 +36,27 @@ public class EnchantJackHammer extends Enchant {
     @Override
     public BreakResult onBreak(BlockBreakEvent event) {
 //        if (!instance.getExplosiveStatus(event.getPlayer().getUniqueId())) return null;
-        RegionManager manager = container.get(event.getBlock().getWorld());
-        for (ProtectedRegion region : manager.getApplicableRegions(event.getBlock().getLocation())) {
-            if (region.getFlag(DefaultFlag.BLOCK_BREAK)!=StateFlag.State.ALLOW||region.getId().toLowerCase().equals("__global__")) continue;
-            int lvl = EnchantManager.getInst().getEnchantLevel(event.getPlayer().getInventory().getItemInMainHand(), "jackhammer");
-            if (!EnchantUtil.chance(max,lvl,maxChance)) return null;
-            Vector pos1 = region.getMinimumPoint().setY(event.getBlock().getY());
-            Vector pos2 = region.getMaximumPoint().setY(event.getBlock().getY());
-            EditSession session = new EditSessionBuilder(event.getBlock().getWorld().getName()).fastmode((Boolean) options[0].getValue()).build();
-            Region cube = new CuboidRegion(pos1,pos2);
-            FaweQueue queue = session.getQueue();
-            List<Material> blocks = StreamSupport.stream(Spliterators.spliteratorUnknownSize(cube.iterator(), Spliterator.ORDERED), false)
-                    .map(queue::getLazyBlock)// loads every block in the selection
-                    .filter(Objects::nonNull) // null check
-                    .filter(block->!block.isAir()) // air check
-                    .map(BaseBlock::getId) // get block ids
-                    .map(Material::getMaterial) // map to materials
-                    .collect(Collectors.toList()); // collect to list
-            session.setMask(EnchantUtil.getMask(event.getBlock().getWorld(), session));
-            // get amount of blocks from cube
-            session.setBlocks(cube, new BaseBlock(0));
-            session.flushQueue();
-            return new BreakResult(blocks, session.getBlockChangeCount());
-        }
-        return null;
+        Optional<ProtectedRegion> opt = container.get(event.getBlock().getWorld()).getApplicableRegions(event.getBlock().getLocation())
+                .getRegions().stream().filter(region->region.getFlag(DefaultFlag.BLOCK_BREAK)==StateFlag.State.ALLOW&&!region.getId().equals("__global__") && !region.getId().equals("mine-event")).findFirst();
+        if (!opt.isPresent()) return null;
+        int lvl = EnchantManager.getInst().getEnchantLevel(event.getPlayer().getInventory().getItemInMainHand(), "jackhammer");
+        if (!EnchantUtil.chance(max,lvl,maxChance)) return null;
+        Vector pos1 = opt.get().getMinimumPoint().setY(event.getBlock().getY());
+        Vector pos2 = opt.get().getMaximumPoint().setY(event.getBlock().getY());
+        EditSession session = new EditSessionBuilder(event.getBlock().getWorld().getName()).fastmode((Boolean) options[0].getValue()).build();
+        Region cube = new CuboidRegion(pos1,pos2);
+        FaweQueue queue = session.getQueue();
+        List<Material> blocks = StreamSupport.stream(Spliterators.spliteratorUnknownSize(cube.iterator(), Spliterator.ORDERED), false)
+                .map(queue::getLazyBlock)// loads every block in the selection
+                .filter(Objects::nonNull) // null check
+                .filter(block->!block.isAir()) // air check
+                .map(BaseBlock::getId) // get block ids
+                .map(Material::getMaterial) // map to materials
+                .collect(Collectors.toList()); // collect to list
+        session.setMask(EnchantUtil.getMask(event.getBlock().getWorld(), session));
+        // get amount of blocks from cube
+        session.setBlocks(cube, new BaseBlock(0));
+        session.flushQueue();
+        return new BreakResult(blocks, session.getBlockChangeCount());
     }
 }
