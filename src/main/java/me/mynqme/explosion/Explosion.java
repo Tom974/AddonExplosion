@@ -29,7 +29,7 @@ public class Explosion extends Addon {
                 new SimpleEntry<>("messages.explosive-toggle-false", "&fExplosive enchant toggled to false"),
                 new SimpleEntry<>("regions.blacklist", Arrays.asList("main"))
         );
-        registerEnchants(new EnchantAtomBomb(), new EnchantCrossMine(), new EnchantExplosive(), new EnchantJackHammer(), new EnchantNuke());
+        registerEnchants(new EnchantAtomBomb(), new EnchantSplash(), new EnchantCrossMine(), new EnchantExplosive(), new EnchantJackHammer(), new EnchantNuke());
         registerCommands(new CmdExplosive());
     }
 

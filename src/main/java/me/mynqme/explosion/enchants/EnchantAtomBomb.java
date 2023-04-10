@@ -27,7 +27,7 @@ public class EnchantAtomBomb extends Enchant {
     private final RegionContainer container = WorldGuardPlugin.inst().getRegionContainer();
     private final Explosion instance = ((Explosion) Explosion.getInstance());
     public EnchantAtomBomb() {
-        super("atombomb", "Atom Bomb", 1, 1, "&d▎ &3%name% &f%level%", 100.0, new SimpleEntry<>("fast-mode", true));
+        super("atombomb", "Atom Bomb", 1, 1, "&d▎ &3%name% &f%level%", 100.0);
     }
 
     @Override
